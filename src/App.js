@@ -1,25 +1,41 @@
-import logo from './logo.svg';
-import './App.css';
+// src/App.js
 
-function App() {
+import React, { useState } from 'react';
+import SearchBar from './components/SearchBar';
+import './App.css';
+import data from './data.json';
+
+const App = () => {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedWord, setSelectedWord] = useState(null);
+  const [translation, setTranslation] = useState('');
+
+  const handleWordClick = (word) => {
+    setSelectedWord(word);
+    setTranslation(data[word]);
+    setSearchQuery('');
+  };
+
+  const filteredWords = Object.keys(data).filter((word) =>
+    word.toLowerCase().startsWith(searchQuery.toLowerCase())
+  );
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <br/>
+      <SearchBar 
+        searchQuery={searchQuery} 
+        setSearchQuery={setSearchQuery} 
+        filteredWords={filteredWords} 
+        onSelectWord={handleWordClick} 
+      />
+      {selectedWord && (
+        <div className="translation">
+          <h2>{translation}</h2>
+        </div>
+      )}
     </div>
   );
-}
+};
 
 export default App;
