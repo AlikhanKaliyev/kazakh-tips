@@ -16,9 +16,10 @@ const App = () => {
     setSearchQuery('');
   };
 
-  const filteredWords = Object.keys(data).filter((word) =>
-    word.toLowerCase().startsWith(searchQuery.toLowerCase())
-  );
+  const filteredWords = Object.keys(data).filter((key) => {
+    const words = key.split(', ');
+    return words.some(word => word.toLowerCase().startsWith(searchQuery.toLowerCase()));
+  });
 
   return (
     <div className="App">
